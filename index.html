@@ -1,10 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CR LYRICS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CR LYRICS - ALFAAZ</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #291039, #10051e 55%, #030108);
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    width: 90%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    font-size: 25px;
+    letter-spacing: 8px;
+    color: #ff55dd;
+    text-shadow: 0 0 10px #ff00cc, 0 0 30px #a000ff;
+    margin-bottom: 65px;
+}
+
+#lyrics {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(25px, 5vw, 43px);
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow:
+        0 0 5px white,
+        0 0 12px #ff55dd,
+        0 0 25px #e000ff,
+        0 0 45px #9500ff;
+}
+
+.animate {
+    animation: appear 0.45s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.song {
+    color: #ff65dd;
+    letter-spacing: 5px;
+    margin-top: 50px;
+    text-shadow: 0 0 15px #ff00cc;
+}
+
+button {
+    margin: 25px 6px;
+    padding: 12px 25px;
+    border: 1px solid #ff55dd;
+    border-radius: 30px;
+    background: #250d35;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #c000ff;
+}
+
+button:hover {
+    background: #8c168f;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #ff70df;
+    box-shadow: 0 0 12px #ff00cc;
+    animation: float 6s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translateY(-100px);
+        opacity: 1;
+    }
+}
+</style>
 </head>
+
 <body>
-    <h1>CR LYRICS ❤️</h1>
-    <p>Welcome to Alfaaz Animation!</p>
+
+<div class="container">
+    <div class="logo">CR LYRICS</div>
+
+    <div id="lyrics">ALFAAZ ❤️</div>
+
+    <div class="song">FEEL THE MUSIC</div>
+
+    <button onclick="startLyrics()">▶ PLAY</button>
+    <button onclick="restartLyrics()">↻ RESTART</button>
+</div>
+
+<script>
+const lyrics = [
+"Pata ni chala, hum badal gaye",
+"Karein ab kya hum, ishq mein phisal gaye",
+"Tere deedar se pehle",
+"Hum jaise toh dil lagane se darte the",
+"Kaisa lag raha hai ab woh",
+"Dekha hai kisi ne usko",
+"Mera bhi use batana",
+"Woh bhoole na",
+"Unki tareef mein kahein kya",
+"Alfaaz hi nahi hain",
+"Jo kuch mera hai sab kuch unka",
+"Unse zyada kasam se humko",
+"Koi khaas hi nahi hai",
+"Khayal hai bada unka",
+"Akkhiyan de samne tu baitha rahwein der tak",
+"Wekhan tainu raat sari chadhdi saver tak",
+"Baagan vichon main te tode tere layi gulab ve",
+"Main te bas kehnda rehnda aap janab ve",
+"Tu te taareyan ton vi sohna ae",
+"Tere varga koi na hona ae",
+"Tu te taareyan ton vi sohna ae",
+"Tere varga koi na hona ae",
+"Jinna aanda si mainu pyar karna ji",
+"Main te tere naal kar leya ae",
+"Main te chum lawan ohna raawan nu",
+"Jithon ik wari kadi langheya tu",
+"Gallan do hi ne, hor koi vi nahi",
+"Ya te tu ee ae, ya te koi nahi",
+"Meri vi gal tu sun le na",
+"Unki tareef mein kahein kya",
+"Alfaaz hi nahi hain",
+"Jo kuch mera hai sab kuch unka",
+"Unse zyada kasam se humko",
+"Koi khaas hi nahi hai",
+"Khayal hai bada unka",
+"Unki tareef mein kahein kya",
+"Alfaaz hi nahi hain",
+"Jo kuch mera hai sab kuch unka",
+"Unse zyada kasam se humko",
+"Koi khaas hi nahi hai",
+"Khayal hai bada unka"
+];
+
+let lineIndex = 0;
+let wordIndex = 0;
+let playing = false;
+let timer;
+
+const display = document.getElementById("lyrics");
+
+function startLyrics() {
+    if (playing) return;
+    playing = true;
+    showWord();
+}
+
+function showWord() {
+    if (!playing) return;
+
+    if (lineIndex >= lyrics.length) {
+        display.textContent = "❤️ CR LYRICS ❤️";
+        playing = false;
+        return;
+    }
+
+    const words = lyrics[lineIndex].split(" ");
+
+    if (wordIndex < words.length) {
+        display.textContent =
+            words.slice(0, wordIndex + 1).join(" ");
+
+        display.classList.remove("animate");
+        void display.offsetWidth;
+        display.classList.add("animate");
+
+        wordIndex++;
+        timer = setTimeout(showWord, 450);
+    } else {
+        lineIndex++;
+        wordIndex = 0;
+        timer = setTimeout(showWord, 1200);
+    }
+}
+
+function restartLyrics() {
+    clearTimeout(timer);
+    lineIndex = 0;
+    wordIndex = 0;
+    playing = false;
+    display.textContent = "ALFAAZ ❤️";
+    startLyrics();
+}
+
+for (let i = 0; i < 45; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.top = Math.random() * 100 + "%";
+    p.style.animationDelay = Math.random() * 6 + "s";
+    document.body.appendChild(p);
+}
+</script>
+
 </body>
 </html>
